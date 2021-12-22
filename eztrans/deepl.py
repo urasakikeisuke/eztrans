@@ -1,5 +1,6 @@
 """deepl.py"""
 
+import argparse
 import os
 import time
 import warnings
@@ -10,7 +11,6 @@ warnings.filterwarnings("ignore")
 from contextlib import redirect_stdout
 
 import pyperclip
-from fire import Fire
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.chrome.options import Options
@@ -19,7 +19,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 os.environ['WDM_LOG_LEVEL'] = '0'
 
 
-def main(text: Optional[str] = None):
+def main(text: str, autocopy: bool):
     options: Options = Options()
     options.add_argument('--lang=ja')
     options.add_argument('--headless')
@@ -39,7 +39,7 @@ def main(text: Optional[str] = None):
     if text is None:
         text_ = pyperclip.paste()
         if text_ == "":
-            raise ValueError(f"No translatable text found. Make sure to copy the valid text or to pass the text when calling the command.")
+            raise ValueError(f"No translatable text found. Make sure to copy a valid text or to pass the text when calling the command.")
         text = text_
 
     cache_path = os.path.expanduser("~/.cache/eztrans")
@@ -86,8 +86,14 @@ def main(text: Optional[str] = None):
 
     print("".join(output_text), flush=True)
 
-    pyperclip.copy(output_text)
+    if autocopy:
+        pyperclip.copy(output_text)
 
 
-if __name__ == "__main__":
-    Fire(main)
+def entory_point():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--text", type=str, default=None, help="Input text to be translated")
+    parser.add_argument("-c", "--autocopy", action="store_true", help="Whether to use auto copy to clipboard")
+    args = parser.parse_args()
+
+    main(args.text, args.autocopy)

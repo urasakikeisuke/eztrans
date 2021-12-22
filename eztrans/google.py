@@ -1,17 +1,17 @@
 """google.py"""
 
+import argparse
 from typing import Optional
 
 import pyperclip
-from fire import Fire
 from googletrans import Translator
 
 
-def main(text: Optional[str] = None):
+def main(text: str, autocopy: bool):
     if text is None:
         text_ = pyperclip.paste()
         if text_ == "":
-            raise ValueError(f"No translatable text found. Make sure to copy the valid text or to pass the text when calling the command.")
+            raise ValueError(f"No translatable text found. Make sure to copy a valid text or to pass the text when calling the command.")
         text = text_
 
     translator: Translator = Translator()
@@ -24,7 +24,13 @@ def main(text: Optional[str] = None):
 
     print(output_text, flush=True)
 
-    pyperclip.copy(output_text)
+    if autocopy:
+        pyperclip.copy(output_text)
 
-if __name__ == "__main__":
-    Fire(main)
+def entory_point():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--text", type=str, default=None, help="Input text to be translated")
+    parser.add_argument("-c", "--autocopy", action="store_true", help="Whether to use auto copy to clipboard")
+    args = parser.parse_args()
+
+    main(args.text, args.autocopy)
