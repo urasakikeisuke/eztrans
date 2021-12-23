@@ -12,12 +12,14 @@ AUTHOR_EMAIL = 'urasakikeisuke.ml@gmail.com'
 URL = 'http://git-docker.tasakilab:5051/git/urasaki/eztrans.git'
 LICENSE = 'MIT License'
 DOWNLOAD_URL = 'http://git-docker.tasakilab:5051/git/urasaki/eztrans.git'
-VERSION = "1.3"
+VERSION = "2.0"
 PYTHON_REQUIRES = ">=3.6"
 INSTALL_REQUIRES = [
+    "numpy",
     "webdriver-manager==3.5.2",
     "selenium==3.141.0",
     "googletrans==4.0.0-rc1",
+    "autocorrect==2.6.1",
     "pyperclip==1.8.2",
 ]
 PACKAGES = setuptools.find_packages()
@@ -31,11 +33,11 @@ CLASSIFIERS = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-
 ENTRY_POINTS = {
     "console_scripts": [
         "ez-deepl = eztrans.deepl:entory_point",
         "ez-google = eztrans.google:entory_point",
+        "ez-spellcheck = ezspellcheck.spellchecker:entory_point",
     ]
 }
 

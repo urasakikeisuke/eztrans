@@ -10,11 +10,11 @@ warnings.filterwarnings("ignore")
 
 from contextlib import redirect_stdout
 
-import pyperclip
-from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+import pyperclip # type: ignore
+from selenium import webdriver # type: ignore
+from selenium.common.exceptions import NoSuchElementException, TimeoutException # type: ignore
+from selenium.webdriver.chrome.options import Options # type: ignore
+from webdriver_manager.chrome import ChromeDriverManager # type: ignore
 
 os.environ['WDM_LOG_LEVEL'] = '0'
 
@@ -88,6 +88,9 @@ def main(text: str, autocopy: bool):
 
     if autocopy:
         pyperclip.copy(output_text)
+
+        if pyperclip.paste() != output_text:
+            print("\nFailed to copy output text to the clipboard")
 
 
 def entory_point():

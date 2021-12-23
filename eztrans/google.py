@@ -3,8 +3,8 @@
 import argparse
 from typing import Optional
 
-import pyperclip
-from googletrans import Translator
+import pyperclip # type: ignore
+from googletrans import Translator # type: ignore
 
 
 def main(text: str, autocopy: bool):
@@ -26,6 +26,9 @@ def main(text: str, autocopy: bool):
 
     if autocopy:
         pyperclip.copy(output_text)
+
+        if pyperclip.paste() != output_text:
+            print("\nFailed to copy output text to the clipboard")
 
 def entory_point():
     parser = argparse.ArgumentParser()
